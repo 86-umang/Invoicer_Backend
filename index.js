@@ -50,9 +50,11 @@ User.createIndexes();
 // For backend and express
 const express = require('express');
 const app = express();
+const path = require('path');
 const cors = require("cors");
 console.log("App listen at port 5000");
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(cors());
 app.get("/", (req, resp) => {
   
@@ -76,4 +78,10 @@ app.post("/register", async (req, resp) => {
         resp.send("Something Went Wrong");
     }
 });
-app.listen(5000);
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "/public", "index.html"));
+});
+
+app.listen(process.env.PORT || 5000);
